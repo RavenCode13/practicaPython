@@ -209,6 +209,20 @@ def terminarCiclo():
 
     return bandera
 
+def calculos(metas, metasCostos, sumatoriaIngresos, sumatoriaEgresos, sumatoriaConCapital):
+    for pos in range(len(metas)):
+        paraAhorrar=sumatoriaIngresos-sumatoriaEgresos
+        cantMeses01=metas[pos]/paraAhorrar
+        paraAhorrarConCapital=sumatoriaConCapital+paraAhorrar
+        cantMeses02=metas[pos]/paraAhorrarConCapital
+
+        print(f"""
+Para lograr la meta <{metas[pos]} que tiene un costo de <{metasCostos[pos]}>
+Tienes la capacidad de ahorrar cada mes de {paraAhorrar}$
+Si se comienza ahorrando de cerro lo conseguiras en {cantMeses01} meses
+Pero tienes ahorrado {sumatoriaConCapital}$ entonces lo podras lograr en {cantMeses02} meses
+""")
+
 #CuerpoPrincipal
 menu()
 bandera01, sumatoriaIngresos, sumatoriaEgresos, sumatoriaConCapital = auxiliares()
@@ -216,3 +230,4 @@ ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos
 while bandera01 ==0:
     opcion = subMenu( sumatoriaIngresos, sumatoriaEgresos)
     bandera01, sumatoriaIngresos, sumatoriaEgresos = seccionarOpciones(opcion, sumatoriaIngresos, sumatoriaEgresos, ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos)
+calculos(metas, metasCostos, sumatoriaIngresos, sumatoriaEgresos, sumatoriaConCapital)
