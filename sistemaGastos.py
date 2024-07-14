@@ -1,8 +1,9 @@
 def auxiliares():
     bandera01 = 0
     sumatoriaIngresos=0
+    sumatoriaEgresos=0
     sumatoriaConCapital=float(input("Tiene algun capital ahorrado? nos ayudara a calcular mejor\n:::>>> "))
-    return bandera01, sumatoriaIngresos, sumatoriaConCapital
+    return bandera01, sumatoriaIngresos, sumatoriaEgresos, sumatoriaConCapital
 
 def inicioListas():
     ingresosNombres = []
@@ -25,7 +26,7 @@ def menu():
             | EN CUANTO TIEMPO PODRA LOGRAR SUS METAS   |
             |___________________________________________|""")
 
-def subMenu():
+def subMenu(sumatoriaIngresos, sumatoriaEgresos):
     print("""
 SELECCIONE UNA OPCION (NUMERO)
 (1) Ver Listas de Ingresos - (2) Agregar un Ingreso - (3) Eliminar un Ingreso
@@ -36,6 +37,10 @@ SELECCIONE UNA OPCION (NUMERO)
           
 (10) Salir
 """)
+    if sumatoriaIngresos>0:
+        print(f"Tienes acumulado {sumatoriaIngresos}$ en solo ingresos")
+    if sumatoriaEgresos>0:
+        print(f"Tienes acumulado -{sumatoriaEgresos}$ en solo Egresos")
     while True:
         opcion = int(input("Ingrese la Opcion\n:::>>> "))
         if opcion>0 and opcion<11:
@@ -44,21 +49,21 @@ SELECCIONE UNA OPCION (NUMERO)
             print("Opcion no valida")
     return opcion
     
-def seccionarOpciones(opcion, ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos):
+def seccionarOpciones(opcion, sumatoriaIngresos, sumatoriaEgresos, ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos):
     bandera = 0
     match opcion:
         case 1:
             opcion01(ingresosNombres, ingresosValor)
         case 2:
-            opcion02(ingresosNombres, ingresosValor)
+            sumatoriaIngresos = opcion02(ingresosNombres, ingresosValor, sumatoriaIngresos)
         case 3:
-            opcion03(ingresosNombres, ingresosValor)
+            sumatoriaIngresos = opcion03(ingresosNombres, ingresosValor, sumatoriaIngresos)
         case 4:
             opcion04(egresosNombres, egresosValor)
         case 5:
-            opcion05(egresosNombres, egresosValor)
+            sumatoriaEgresos = opcion05(egresosNombres, egresosValor, sumatoriaEgresos)
         case 6:
-            opcion06(egresosNombres, egresosValor)
+            sumatoriaEgresos = opcion06(egresosNombres, egresosValor, sumatoriaEgresos)
         case 7:
             opcion07(metas, metasCostos)
         case 8:
@@ -71,7 +76,7 @@ def seccionarOpciones(opcion, ingresosNombres, ingresosValor, egresosNombres, eg
             print("FATAL ERROR!")
     if opcion==1 or opcion==4 or opcion==7:
         espera=input("Presione Enter para continuar o Ingrese cualquier dato\n:::>>>")
-    return bandera
+    return bandera, sumatoriaIngresos, sumatoriaEgresos
 
 #(1) Ver Listas de Ingresos
 def opcion01(ingresosNombres, ingresosValor):
@@ -81,7 +86,7 @@ def opcion01(ingresosNombres, ingresosValor):
         for pos in range(len(ingresosNombres)):
             print(f"#{pos+1} Ingreso: {ingresosNombres[pos]} Monto: {ingresosValor[pos]}")
 #(2) Agregar un Ingreso
-def opcion02(ingresosNombres, ingresosValor):
+def opcion02(ingresosNombres, ingresosValor, sumatoriaIngresos):
     print("----------------------------------")
     while True:
         dato01=input("De que se trata el ingreso a Cargar? (Nombre del ingreso)\n:::>>> ")
@@ -94,10 +99,12 @@ def opcion02(ingresosNombres, ingresosValor):
                 print("Error en el nombre del Ingreso")
             if dato02<1:
                 print("Error en el monto del ingreso")
+    sumatoriaIngresos+=dato02
     ingresosNombres.append(dato01)
     ingresosValor.append(dato02)
+    return sumatoriaIngresos
 #(3) Eliminar un Ingreso
-def opcion03(ingresosNombres, ingresosValor):
+def opcion03(ingresosNombres, ingresosValor, sumatoriaIngresos):
     opcion01(ingresosNombres, ingresosValor)
     if len(ingresosNombres)>0:
         while True:
@@ -107,8 +114,10 @@ def opcion03(ingresosNombres, ingresosValor):
                 break
             else:
                 print("Ingreso mal el indice a borrar")
+        sumatoriaIngresos-=ingresosValor[indice-1]
         ingresosNombres.pop(indice-1)
         ingresosValor.pop(indice-1)
+        return sumatoriaIngresos
 #(4) Ver Listas de Egreso
 def opcion04(egresosNombres, egresosValor):
     if len(egresosNombres)==0:
@@ -117,7 +126,7 @@ def opcion04(egresosNombres, egresosValor):
         for pos in range(len(egresosNombres)):
             print(f"#{pos+1} Ingreso: {egresosNombres[pos]} Monto: {egresosValor[pos]}")
 #(5) Agregar un Egreso
-def opcion05(egresosNombres, egresosValor):
+def opcion05(egresosNombres, egresosValor, sumatoriaEgresos):
     print("----------------------------------")
     while True:
         dato01=input("De que se trata el egreso a Cargar? (Nombre del egreso)\n:::>>> ")
@@ -130,10 +139,12 @@ def opcion05(egresosNombres, egresosValor):
                 print("Error en el nombre del Egreso")
             if dato02<1:
                 print("Error en el monto del Egreso")
+    sumatoriaEgresos+=dato02
     egresosNombres.append(dato01)
     egresosValor.append(dato02)
+    return sumatoriaEgresos
 #(6) Eliminar un Egreso
-def opcion06(egresosNombres, egresosValor):
+def opcion06(egresosNombres, egresosValor, sumatoriaEgresos):
     opcion04(egresosNombres, egresosValor)
     if len(egresosNombres)>0:
         while True:
@@ -143,8 +154,10 @@ def opcion06(egresosNombres, egresosValor):
                 break
             else:
                 print("Ingreso mal el indice a borrar")
+        sumatoriaEgresos-=egresosValor[indice-1]
         egresosNombres.pop(indice-1)
         egresosValor.pop(indice-1)
+        return sumatoriaEgresos
 #(7) Ver Listas de Metas
 def opcion07(metas, metasCostos):
     if len(metas)==0:
@@ -198,8 +211,8 @@ def terminarCiclo():
 
 #CuerpoPrincipal
 menu()
-bandera01, sumatoriaIngresos, sumatoriaConCapital = auxiliares()
+bandera01, sumatoriaIngresos, sumatoriaEgresos, sumatoriaConCapital = auxiliares()
 ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos = inicioListas()
 while bandera01 ==0:
-    opcion = subMenu()
-    bandera01 = seccionarOpciones(opcion, ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos)
+    opcion = subMenu( sumatoriaIngresos, sumatoriaEgresos)
+    bandera01, sumatoriaIngresos, sumatoriaEgresos = seccionarOpciones(opcion, sumatoriaIngresos, sumatoriaEgresos, ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos)
