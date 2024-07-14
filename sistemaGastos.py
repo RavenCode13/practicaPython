@@ -211,12 +211,14 @@ def terminarCiclo():
 
 def calculos(metas, metasCostos, sumatoriaIngresos, sumatoriaEgresos, sumatoriaConCapital):
     for pos in range(len(metas)):
-        paraAhorrar=sumatoriaIngresos-sumatoriaEgresos
-        cantMeses01=metasCostos[pos]/paraAhorrar
-        metasMenosCapital=metasCostos[pos]-sumatoriaConCapital
-        cantMeses02=metasMenosCapital/paraAhorrar
-
-        print(f"""
+        if sumatoriaConCapital>metasCostos[pos]:
+            print(f"Usted tiene posibilidad actualmente para comprar <{metas[pos]}>")
+        else:
+            paraAhorrar=sumatoriaIngresos-sumatoriaEgresos
+            cantMeses01=metasCostos[pos]/paraAhorrar
+            metasMenosCapital=metasCostos[pos]-sumatoriaConCapital
+            cantMeses02=metasMenosCapital/paraAhorrar
+            print(f"""
 Para lograr la meta <{metas[pos]}> que tiene un costo de <{metasCostos[pos]}>
 Tienes la capacidad de ahorrar cada mes de {paraAhorrar}$
 Si se comienza ahorrando de cero lo conseguiras en {cantMeses01} meses
