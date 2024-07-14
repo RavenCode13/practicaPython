@@ -1,7 +1,8 @@
 def auxiliares():
     bandera01 = 0
-
-    return bandera01
+    sumatoriaIngresos=0
+    sumatoriaConCapital=float(input("Tiene algun capital ahorrado? nos ayudara a calcular mejor\n:::>>> "))
+    return bandera01, sumatoriaIngresos, sumatoriaConCapital
 
 def inicioListas():
     ingresosNombres = []
@@ -196,8 +197,8 @@ def terminarCiclo():
     return bandera
 
 #CuerpoPrincipal
-bandera01 = auxiliares()
 menu()
+bandera01, sumatoriaIngresos, sumatoriaConCapital = auxiliares()
 ingresosNombres, ingresosValor, egresosNombres, egresosValor, metas, metasCostos = inicioListas()
 while bandera01 ==0:
     opcion = subMenu()
